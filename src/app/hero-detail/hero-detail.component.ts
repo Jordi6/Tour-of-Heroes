@@ -11,7 +11,7 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./hero-detail.component.css']
 })
 export class HeroDetailComponent implements OnInit {
-@Input() hero: Hero;
+@Input() hero: Hero = { name: '' } as Hero;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +25,10 @@ export class HeroDetailComponent implements OnInit {
 
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.heroService.getHero(id).subscribe(hero => this.hero = hero);
+    if (id > 0) {
+      /* Do not subscribe if there is no number provided */
+      this.heroService.getHero(id).subscribe(hero => (this.hero = hero));
+    }
   }
 
   goBack(): void {
@@ -33,8 +36,13 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(): void {
-    this.heroService.updateHero(this.hero)
-    .subscribe(() => this.goBack());
-  }
+    if (this.hero.id > 0) {
+        this.heroService.updateHero(this.hero)
+                    .subscribe(() => this.goBack());
+    } else {
+        this.heroService.addHero(this.hero)
+                    .subscribe(() => this.goBack());
+    }
+}
 
 }

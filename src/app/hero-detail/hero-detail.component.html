@@ -1,13 +1,30 @@
-<div *ngIf="hero">
+<form (ngSubmit)="heroForm.form.valid && save()" #heroForm="ngForm">
 
     <h2>{{hero.name | uppercase }} Details</h2>
-    <div><span>id: </span>{{hero.id}}</div>
+    <div><span>id: </span>{{hero.id || '(not saved)'}}</div>
 
     <div>
         <label>name:
-            <input [(ngModel)]="hero.name" palceholder="name" />
+            <input 
+            name="name" 
+            #name="ngModel" 
+            [(ngModel)]="hero.name" 
+            placeholder="name" 
+            required="" 
+            minlength="3"
+            appForbiddenName="bob">
         </label>
+        <div 
+        *ngIf="name.invalid && (name.dirty || name.touched || heroForm.submitted)" 
+        class="input-error">
+
+        <div *ngIf="name.errors.required">Name is required</div>
+        <div *ngIf="name.errors.minlength">Name must be at least 3 characters</div>
+        <div *ngIf="name.errors.forbiddenName">
+            Definitely cannot be named 'bob'.
+        </div>
     </div>
-    <button (click)="goBack()">go back</button>
-    <button (click)="save()">save</button>
-</div>
+    </div>
+    <button type="button" (click)="goBack()">go back</button>
+    <button type="submit" >save</button>
+</form>
