@@ -1,21 +1,28 @@
-<form (ngSubmit)="heroForm.form.valid && save()" #heroForm="ngForm">
+<form (ngSubmit)="save()" [formGroup]="heroForm">
 
-    <h2>{{hero.name | uppercase }} Details</h2>
-    <div><span>id: </span>{{hero.id || '(not saved)'}}</div>
+    <!-- Original form tag and attribute for template driven forms -->
+    <!-- < (ngSubmit)="heroForm.form.valid && save()" #heroForm="ngForm"> -->
+    <!-- <h2>{{hero.name | uppercase }} Details</h2>
+    <div><span>id: </span>{{hero.id || '(not saved)'}}</div> -->
+
+    <h2>Hero Details: {{ name.value | uppercase }}</h2>
+    <div><label>id: </label>{{ id.value || '(not saved)' }}</div>
 
     <div>
         <label>name:
-            <input 
+            <!-- Original input, see comment above -->
+            <!-- <input 
             name="name" 
             #name="ngModel" 
             [(ngModel)]="hero.name" 
             placeholder="name" 
             required="" 
             minlength="3"
-            appForbiddenName="bob">
+            appForbiddenName="bob"> -->
+            <input placeholder="name" formControlName="name">
         </label>
         <div 
-        *ngIf="name.invalid && (name.dirty || name.touched || heroForm.submitted)" 
+        *ngIf="hasNameErrors" 
         class="input-error">
 
         <div *ngIf="name.errors.required">Name is required</div>
