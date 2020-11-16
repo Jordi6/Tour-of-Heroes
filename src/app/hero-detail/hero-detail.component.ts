@@ -21,10 +21,10 @@ export class HeroDetailComponent implements OnInit {
   heroForm: FormGroup = new FormGroup({
     id: new FormControl('', []),
     name: new FormControl('', [
-      Validators.required,
+      Validators.required, 
       Validators.minLength(3),
       forbiddenNameValidator(/bob/i)
-    ])
+      ])
   });
 
   // Exposes the 'id' FormControl as a property
@@ -85,7 +85,7 @@ export class HeroDetailComponent implements OnInit {
     if (hero.id > 0) {
       this.heroService.updateHero(hero).subscribe(onComplete);
     } else {
-      // add this to fix hero id not being populated.
+      // add new hero id fix.
       hero.id = null;
       this.heroService.addHero(hero).subscribe(onComplete);
     }
